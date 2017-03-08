@@ -140,7 +140,7 @@ const sendEmail = function(newLinks) {
     ]
   })
   .then(function(data) {
-    console.log("sent email for ${newLinks.length} new results");
+    console.log(`sent email for ${newLinks.length} new results`);
   });
 }
 
