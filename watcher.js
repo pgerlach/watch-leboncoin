@@ -5,17 +5,19 @@ const cheerio = require('cheerio');
 const mongoose = require('mongoose');
 const _ = require('lodash');
 const SparkPost = require('sparkpost');
+const nconf = require('nconf');
+
+nconf
+.argv()
+.env()
+.defaults({
+  MONGODB_URI: 'mongodb://localhost/test'
+});
+
+nconf.required(['MONGODB_URI', 'SPARKPOST_API_KEY', 'SPARKPOST_SANDBOX_DOMAIN', 'LEBONCOIN_URL', 'LEBONCOIN_EMAIL']);
 
 
-const sparky = new SparkPost(); // uses process.env.SPARKPOST_API_KEY
-
-// check that we have the required config
-['LEBONCOIN_URL', 'LEBONCOIN_EMAIL'].forEach(function(v) {
-  if (!process.env.hasOwnProperty(v)) {
-    console.log(`missing ${v} in process.env`);
-    process.exit(-1);
-  }
-})
+const sparky = new SparkPost(nconf.get('SPARKPOST_API_KEY'));
 
 
 mongoose.Promise = global.Promise;
@@ -34,7 +36,7 @@ const Match = mongoose.model('Match', {
 
 const getHTML = function() {
   return new Promise(function(resolve, reject) {
-    request.get(process.env.LEBONCOIN_URL,  function (err, response, body) {
+    request.get(nconf.get('LEBONCOIN_URL'),  function (err, response, body) {
       if (err) {
         return reject(err);
       }
@@ -129,13 +131,13 @@ const sendEmail = function(newLinks) {
       sandbox: true
     },
     content: {
-      from: 'testing@' + process.env.SPARKPOST_SANDBOX_DOMAIN, // 'testing@sparkpostbox.com'
+      from: 'testing@' + nconf.get('SPARKPOST_SANDBOX_DOMAIN'), // 'testing@sparkpostbox.com'
       subject: 'New results on leboncoin !',
       html:`<html><body><p>New results on leboncoin</p><ul>${htmlListItems}</ul></body></html>`
     },
     recipients: [
       {
-        address: process.env.LEBONCOIN_EMAIL
+        address: nconf.get('LEBONCOIN_EMAIL')
       }
     ]
   })
@@ -149,7 +151,7 @@ getHTML()
 .then(function(elts) {
   if (elts && elts.length) {
     console.log(`${elts.length} elt${(elts.length > 1) ? 's' : ''}`);
-    mongoose.connect(process.env.MONGODB_URI);
+    mongoose.connect(nconf.get('MONGODB_URI'));
 
     return extractInfosFromAllElts(elts)
     .then(handleAllItems)
