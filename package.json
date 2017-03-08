@@ -1,0 +1,30 @@
+{
+  "name": "watch-leboncoin",
+  "version": "1.0.0",
+  "description": "get email alerts whenever what you want appears on leboncoin",
+  "main": "main.js",
+  "dependencies": {
+    "cheerio": "^0.22.0",
+    "lodash": "^4.17.4",
+    "mongoose": "^4.8.6",
+    "request": "^2.80.0",
+    "sparkpost": "^2.1.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pgerlach/watch-leboncoin.git"
+  },
+  "keywords": [
+    "leboncoin"
+  ],
+  "author": "Pierre-Rudolf Gerlach <pgerlach@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pgerlach/watch-leboncoin/issues"
+  },
+  "homepage": "https://github.com/pgerlach/watch-leboncoin#readme"
+}

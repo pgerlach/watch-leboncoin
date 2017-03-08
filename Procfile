@@ -1,0 +1,1 @@
+watcher: node watcher.js
