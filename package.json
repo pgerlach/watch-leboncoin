@@ -2,11 +2,13 @@
   "name": "watch-leboncoin",
   "version": "1.0.0",
   "description": "get email alerts whenever what you want appears on leboncoin",
-  "main": "main.js",
+  "main": "server.js",
   "dependencies": {
     "cheerio": "^0.22.0",
+    "express": "^4.15.2",
     "lodash": "^4.17.4",
     "mongoose": "^4.8.6",
+    "nconf": "^0.8.4",
     "request": "^2.80.0",
     "sparkpost": "^2.1.2"
   },
